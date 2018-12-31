@@ -28,7 +28,7 @@ trait Stream[+A] {
       case _ => z
     }
 
-  def exists(p: A => Boolean): Boolean =
+  def exists(p: A => Boolean): Boolean = 
     foldRight(false)((a, b) => p(a) || b) // Here `b` is the unevaluated recursive step that folds the tail of the stream. If `p(a)` returns `true`, `b` will never be evaluated and the computation terminates early.
 
   @annotation.tailrec
@@ -45,7 +45,7 @@ trait Stream[+A] {
   }
 
   // practice
-  //  @annotation.tailrec
+//  @annotation.tailrec
   final def drop(n: Int): Stream[A] = this match {
     case Cons(_, t) if n > 0 => t().drop(n - 1)
     case _ => this
@@ -104,9 +104,9 @@ trait Stream[+A] {
   //noinspection VariablePatternShadow
   def takeViaUnfold(n: Int): Stream[A] =
     unfold((this,n)) {
-      case (Cons(h, _), 1) => Some(h(), (Empty, 0))
-      case (Cons(h, t), n) if n > 0 => Some((h(), (t(), n-1)))
-      case _ => None
+        case (Cons(h, _), 1) => Some(h(), (Empty, 0))
+        case (Cons(h, t), n) if n > 0 => Some((h(), (t(), n-1)))
+        case _ => None
     }
 
   def takeWhileViaUnfold(f: A => Boolean): Stream[A] =
@@ -139,7 +139,7 @@ trait Stream[+A] {
     }
 
   def tails: Stream[Stream[A]] =
-    unfold (this) {
+     unfold (this) {
       case Empty => None
       case s => Some((s, s drop 1))
     } append Stream(empty)
@@ -162,7 +162,7 @@ object Stream {
   def empty[A]: Stream[A] = Empty
 
   def apply[A](as: A*): Stream[A] =
-    if (as.isEmpty) empty
+    if (as.isEmpty) empty 
     else cons(as.head, apply(as.tail: _*))
 
   val ones: Stream[Int] = Stream.cons(1, ones)
